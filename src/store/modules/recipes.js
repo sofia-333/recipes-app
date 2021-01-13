@@ -1,3 +1,4 @@
+import Vue from 'vue'
 const state = {
   recipeNum: 4,
   recipes: [
@@ -85,20 +86,24 @@ const state = {
 const getters = {
   getRecipeNum: state => state.recipeNum,
   allRecipes: state => state.recipes,
-  // getRecipe: (state) => {
-  //   return (id) => {
-  //     return state.recipes.find(recipe => recipe.id === id)
-  //   }
-  // }
 };
 
 const actions = {
   addRecipe({ commit }, newRecipe) {
     commit('add', newRecipe)
   },
+  deleteRecipe({ commit }, recipeToDelete) {
+    commit('delete', recipeToDelete)
+  },
   increaseRecipeNum({ commit }) {
     commit('increase')
-  }
+  },
+  updateRecipe({ commit }, updatedRecipe) {
+    commit('update', updatedRecipe)
+  },
+  // searchRecipe({ commit }, searchedRecipe) {
+  //   commit('search', searchedRecipe)
+  // }
 };
 
 const mutations = {
@@ -106,10 +111,22 @@ const mutations = {
     state.recipes.push(newRecipe)
     console.log(state.recipes)
   },
+  delete: (state, recipeToDelete) => {
+    state.recipes = state.recipes.filter(recipe => recipe.id != recipeToDelete.id)
+    console.log(state.recipes)
+  },
   increase: (state) => {
     state.recipeNum++;
     console.log(state.recipeNum);
-  }
+  },
+  update: (state, updatedRecipe) => {
+    const index = state.recipes.find(recipe => recipe.id === updatedRecipe.id);
+    Vue.set(state.recipes, index, updatedRecipe);
+    console.log(state.recipes[index]);
+  },
+  // search: (state, searchedRecipe) => {
+  //   const matched = state.recipes.find(searchedRecipe);
+  // }
 };
 
 

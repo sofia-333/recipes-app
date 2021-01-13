@@ -16,19 +16,29 @@
       >
     </b-list-group>
     <div class="btn-container">
-      <b-icon class="icon-edit" icon="pencil-fill" @click="editRecipe"></b-icon>
+      <b-icon
+        class="icon-trash"
+        icon="pencil-fill"
+        @click="editRecipe"
+      ></b-icon>
+      <b-icon
+        class="icon-edit"
+        icon="trash-fill"
+        @click="deleteCurrentRecipe"
+      ></b-icon>
       <b-button class="button" @click="goBack">Back</b-button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "ViewRecipe",
   computed: mapGetters(["allRecipes"]),
   methods: {
+    ...mapActions(["deleteRecipe"]),
     goBack() {
       // this.$router.replace("/recipes");
       this.$router.go(-1);
@@ -39,8 +49,11 @@ export default {
     },
     getCurrentRecipe() {
       return this.allRecipes.find(
-        (recipe) => recipe.id === parseFloat(this.$route.params.id)
+        (recipe) => recipe.id === parseInt(this.$route.params.id)
       );
+    },
+    deleteCurrentRecipe() {
+      this.deleteRecipe(this.getCurrentRecipe()).then(this.goBack());
     },
   },
 };
@@ -55,17 +68,22 @@ export default {
   margin: 5px;
   border-radius: 20px;
 }
-.icon-edit {
+.icon-edit,
+.icon-trash {
   font-size: 35px;
   padding: 5px;
   border: solid #333 2px;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px;
+  margin: 5px;
 }
-.icon-edit :hover {
+.icon-edit :hover,
+.icon-trash :hover {
   color: grey;
   border-color: grey;
+}
+.button {
+  margin: 5px;
 }
 .btn-container {
   display: flex;

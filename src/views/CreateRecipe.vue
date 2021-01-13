@@ -24,7 +24,7 @@
 
         <b-form-file class="input mt-3" v-model="file" plain></b-form-file>
         <b-button class="button" @click="goBack">Back</b-button>
-        <b-button class="button submit" type="submit">Submit</b-button>
+        <b-button class="button submit" type="submit">Add Recipe</b-button>
       </b-jumbotron>
     </b-form>
   </div>
@@ -59,15 +59,13 @@ export default {
       alert("New Recipe Added");
     },
     goBack() {
-      this.$router.push({ path: "/recipes" });
-      // this.$router.replace("/recipes");
+      this.$router.go(-1);
     },
     imageToBase64(file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         console.log("file to base64 result:" + reader.result);
-        console.log(typeof reader.result, "is type of returned value");
         this.newRecipe.image = reader.result;
       };
       reader.onerror = function (error) {

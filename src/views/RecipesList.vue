@@ -3,10 +3,11 @@
     <Header />
     <div class="search">
       <b-form-input
-        v-model="title"
+        v-model="searched"
+        @change="searchRecipe(searched)"
         placeholder="Type dish name..."
       ></b-form-input>
-      <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+      <!-- <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button> -->
     </div>
     <div class="add">
       <b-icon @click="addRecipe" id="addIcon" icon="plus-circle-fill"></b-icon>
@@ -49,10 +50,11 @@ export default {
   },
   data() {
     return {
-      title: "",
+      searched: "",
     };
   },
   methods: {
+    // ...mapActions(['searchRecipe']),
     addRecipe() {
       // this.$router.replace("recipes/create");
       this.$router.push({ path: `recipes/create` });
