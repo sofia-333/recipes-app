@@ -1,23 +1,27 @@
 <template>
   <div class="home">
-    <Header/>
+    <Header />
     <div class="container">
-      <img src='@/assets/images/food.jpeg' alt="Food Image">
-       <router-link to="/recipes"><h1 class="centered">See All Recipes Here</h1></router-link>
+      <img src="@/assets/images/food.jpeg" alt="Food Image" />
+      <h1 class="centered" @click="goToRecipes">See All Recipes Here</h1>
     </div>
-    
   </div>
 </template>
 
 <script>
-import Header from "../components/Header.vue"
+import Header from "../components/Header.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    Header
-  }
-}
+    Header,
+  },
+  methods: {
+    goToRecipes() {
+      this.$router.push({ path: "/recipes" });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -28,7 +32,7 @@ export default {
   color: white;
 }
 img {
-  margin-top:40px;
+  margin-top: 40px;
   width: 1200px;
 }
 .centered {
@@ -37,12 +41,12 @@ img {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-h1{
+h1 {
   font-size: 42px;
   padding: 20px;
   border-radius: 20px;
   border: solid white 3px;
-  cursor:pointer;
+  cursor: pointer;
   color: white;
 }
 </style>

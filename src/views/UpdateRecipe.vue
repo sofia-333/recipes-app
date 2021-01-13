@@ -7,13 +7,14 @@
 
 <script>
 export default {
-  name: 'UpdateRecipe',
+  name: "UpdateRecipe",
   methods: {
     goBack() {
-      this.$router.replace(`/recipes/${this.$route.params.id}`);
+      this.$router.go(-1);
+      // this.$router.replace(`/recipes/${this.$route.params.id}`);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

@@ -1,4 +1,5 @@
 const state = {
+  recipeNum: 4,
   recipes: [
     {
       id: 0,
@@ -57,7 +58,7 @@ const state = {
       description:
         `    	
         - Prepare the green chutney by blending/ pulsing all the ingredients listed above in a food processor or blender until it resembles something like a fine pesto.
-        - To assemble the sandwiches: Start with 2 slices of soft white bread and spread a layer of butter (margarine for vegan version) on both sides of each slice.
+        - To assemble the saCounterndwiches: Start with 2 slices of soft white bread and spread a layer of butter (margarine for vegan version) on both sides of each slice.
         - Generously spread the green chutney on one side of each slice.
         - Then layer one of the bread with sliced potatoes, sprinkle with salt (or chat masala), then arrange the sliced tomatoes, cucumbers, peppers and top with grated cheese (optional- leave out for vegan version) and top with the second slice of bread
         - Toast in Panini press or similarly until the sandwich is is golden brown and get grill marks. Cut and serve with side ketchup and extra chutney and if desired.
@@ -77,43 +78,37 @@ const state = {
         - Toast in Panini press or similarly until the sandwich is is golden brown and get grill marks. Cut and serve with side ketchup and extra chutney and if desired.
     `
     },
-    {
-      id: 5,
-      title: "Bombay Sandwich",
-      image: require('@/assets/images/Bombay-Sandwich.jpeg'),
-      time: '20 min',
-      description:
-        `    	
-        - Prepare the green chutney by blending/ pulsing all the ingredients listed above in a food processor or blender until it resembles something like a fine pesto.
-        - To assemble the sandwiches: Start with 2 slices of soft white bread and spread a layer of butter (margarine for vegan version) on both sides of each slice.
-        - Generously spread the green chutney on one side of each slice.
-        - Then layer one of the bread with sliced potatoes, sprinkle with salt (or chat masala), then arrange the sliced tomatoes, cucumbers, peppers and top with grated cheese (optional- leave out for vegan version) and top with the second slice of bread
-        - Toast in Panini press or similarly until the sandwich is is golden brown and get grill marks. Cut and serve with side ketchup and extra chutney and if desired.
-    `
-    }
-    
+
   ]
 };
 
 const getters = {
+  getRecipeNum: state => state.recipeNum,
   allRecipes: state => state.recipes,
-  getRecipe: (state) => {
-    return (id) => {
-      return state.recipes.find(recipe => recipe.id === id)
-    }
-  }
+  // getRecipe: (state) => {
+  //   return (id) => {
+  //     return state.recipes.find(recipe => recipe.id === id)
+  //   }
+  // }
 };
 
 const actions = {
-  addRecipe({ commit }, newRecipe ) {
+  addRecipe({ commit }, newRecipe) {
     commit('add', newRecipe)
+  },
+  increaseRecipeNum({ commit }) {
+    commit('increase')
   }
 };
 
 const mutations = {
-  add : (state, newRecipe) => {
-    (state.recipes.push(newRecipe))
+  add: (state, newRecipe) => {
+    state.recipes.push(newRecipe)
     console.log(state.recipes)
+  },
+  increase: (state) => {
+    state.recipeNum++;
+    console.log(state.recipeNum);
   }
 };
 

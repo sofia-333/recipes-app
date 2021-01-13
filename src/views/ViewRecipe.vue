@@ -1,11 +1,10 @@
 <template>
   <div class="container">
     <h1>{{ getCurrentRecipe().title }}</h1>
-    <img class="image" :src="getCurrentRecipe().image">
+    <img class="image" :src="getCurrentRecipe().image" />
     <b-list-group>
       <b-list-group-item
-        ><b>Name:</b>
-        {{ getCurrentRecipe().title }}</b-list-group-item
+        ><b>Name:</b> {{ getCurrentRecipe().title }}</b-list-group-item
       >
       <b-list-group-item
         ><b>Time to prepare:</b>
@@ -31,15 +30,18 @@ export default {
   computed: mapGetters(["allRecipes"]),
   methods: {
     goBack() {
-      this.$router.replace("/recipes");
+      // this.$router.replace("/recipes");
+      this.$router.go(-1);
     },
     editRecipe() {
-      this.$router.replace(`${this.$route.params.id}/update`);
+      this.$router.push({ path: `${this.$route.params.id}/update` });
+      // this.$router.replace(`${this.$route.params.id}/update`);
     },
     getCurrentRecipe() {
-      return this.allRecipes.find( recipe => recipe.id === parseFloat(this.$route.params.id) );
+      return this.allRecipes.find(
+        (recipe) => recipe.id === parseFloat(this.$route.params.id)
+      );
     },
-    
   },
 };
 </script>
@@ -65,7 +67,7 @@ export default {
   color: grey;
   border-color: grey;
 }
-.btn-container{
+.btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
