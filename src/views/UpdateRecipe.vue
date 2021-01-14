@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <b-form @submit="onUpdate">
-      <b-jumbotron class="blue" header="Create New Recipe">
+      <b-jumbotron class="blue" header="Update Recipe">
+        <img :src="updatedRecipe.image" class="displayed-image" alt="Image" />
         <b-form-input
           class="input"
           v-model="updatedRecipe.title"
@@ -21,8 +22,14 @@
           rows="10"
           max-rows="6"
         ></b-form-textarea>
-
-        <b-form-file class="input mt-3" v-model="file" plain></b-form-file>
+        <p>You can update picture from here:</p>
+        <!-- <div><input type="file"></div> -->
+        <b-form-file
+          @change="fileChange"
+          class="input mt-3"
+          v-model="file"
+          plain
+        ></b-form-file>
         <b-button class="button" @click="goBack">Back</b-button>
         <b-button class="button submit" type="submit">Update</b-button>
       </b-jumbotron>
@@ -40,25 +47,34 @@ export default {
       file: null,
       updatedRecipe: {
         id: null,
-        title: "this.getCurrentRecipe().title",
-        time: "this.getCurrentRecipe.time",
+        title: "",
+        time: "",
+        description: "",
         image: null,
-        description: "this.getCurrentRecipe.descripiton",
       },
     };
+  },
+  created: function () {
+    const current = this.getCurrentRecipe();
+    this.updatedRecipe.id = current.id;
+    this.updatedRecipe.title = current.title;
+    this.updatedRecipe.time = current.time;
+    this.updatedRecipe.description = current.description;
+    this.updatedRecipe.image = current.image;
   },
   computed: mapGetters(["allRecipes"]),
   methods: {
     ...mapActions(["updateRecipe"]),
     onUpdate() {
       event.preventDefault();
-      this.updatedRecipe.id = this.getCurrentRecipe().id;
-      this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
       this.updateRecipe(this.updatedRecipe);
       alert("Recipe Updated");
     },
     goBack() {
       this.$router.go(-1);
+    },
+    fileChange() {
+      this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
     },
     imageToBase64(file) {
       const reader = new FileReader();
@@ -85,12 +101,19 @@ export default {
   margin-top: 30px;
   background-color: #333;
 }
-
+.left {
+  text-align: left;
+  margin: 15px;
+}
 .input {
   margin: 15px;
 }
 .button {
   margin: 5px;
+}
+.displayed-image {
+  width: 300px;
+  text-align: left;
 }
 .submit {
   background-color: rgb(68, 102, 255);

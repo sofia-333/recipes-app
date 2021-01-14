@@ -100,33 +100,23 @@ const actions = {
   },
   updateRecipe({ commit }, updatedRecipe) {
     commit('update', updatedRecipe)
-  },
-  // searchRecipe({ commit }, searchedRecipe) {
-  //   commit('search', searchedRecipe)
-  // }
+  }
 };
 
 const mutations = {
   add: (state, newRecipe) => {
     state.recipes.push(newRecipe)
-    console.log(state.recipes)
   },
   delete: (state, recipeToDelete) => {
     state.recipes = state.recipes.filter(recipe => recipe.id != recipeToDelete.id)
-    console.log(state.recipes)
   },
   increase: (state) => {
     state.recipeNum++;
-    console.log(state.recipeNum);
   },
   update: (state, updatedRecipe) => {
-    const index = state.recipes.find(recipe => recipe.id === updatedRecipe.id);
+    const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
     Vue.set(state.recipes, index, updatedRecipe);
-    console.log(state.recipes[index]);
   },
-  // search: (state, searchedRecipe) => {
-  //   const matched = state.recipes.find(searchedRecipe);
-  // }
 };
 
 

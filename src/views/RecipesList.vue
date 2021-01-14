@@ -1,21 +1,18 @@
 <template>
   <div class="recipes">
     <Header />
-    <div class="search">
-      <b-form-input
-        v-model="searched"
-        @change="searchRecipe(searched)"
-        placeholder="Type dish name..."
-      ></b-form-input>
-      <!-- <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button> -->
-    </div>
+    <b-form-input
+      class="search"
+      v-model="searched"
+      placeholder="Type dish name..."
+    ></b-form-input>
     <div class="add">
       <b-icon @click="addRecipe" id="addIcon" icon="plus-circle-fill"></b-icon>
       <p>New</p>
     </div>
-    <h1>Here is the list of recipes</h1>
+    <h1>Your Recipes</h1>
     <div class="grid-list">
-      <div :key="recipe.id" v-for="recipe in allRecipes">
+      <div :key="recipe.id" v-for="recipe in displayedRecipes()">
         <b-card
           :title="recipe.title"
           :img-src="recipe.image"
@@ -56,16 +53,24 @@ export default {
   methods: {
     // ...mapActions(['searchRecipe']),
     addRecipe() {
-      // this.$router.replace("recipes/create");
       this.$router.push({ path: `recipes/create` });
     },
     viewRecipe(recipe) {
       this.$router.push({ path: `recipes/${recipe.id}` });
-      // this.$router.replace(`recipes/${recipe.id}`);
     },
     editRecipe(recipe) {
       this.$router.push({ path: `recipes/${recipe.id}/update` });
-      // this.$router.replace(`recipes/${recipe.id}/update`);
+    },
+    searchRecipe() {
+      const matched = this.allRecipes.filter(
+        (recipe) =>
+          recipe.title.toLowerCase().indexOf(this.searched.toLowerCase()) !== -1
+      );
+      return matched;
+    },
+    displayedRecipes() {
+      if (this.searched === "") return this.allRecipes;
+      else return this.searchRecipe();
     },
   },
   computed: mapGetters(["allRecipes"]),
@@ -75,12 +80,7 @@ export default {
 <style scoped>
 .search {
   width: 60%;
-  margin: 6px 19%;
-  display: flex;
-  flex-direction: row;
-  /* justify-content: center;
-  align-items: center;
-  text-align: center; */
+  margin: 14px 19%;
 }
 .my-sm-0 {
   margin-left: 1%;

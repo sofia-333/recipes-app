@@ -2,6 +2,7 @@
   <div class="container">
     <b-form @submit="onSubmit">
       <b-jumbotron class="blue" header="Create New Recipe">
+        <img :src="newRecipe.image" class="displayed-image" alt="Image" />
         <b-form-input
           class="input"
           v-model="newRecipe.title"
@@ -22,7 +23,12 @@
           max-rows="6"
         ></b-form-textarea>
 
-        <b-form-file class="input mt-3" v-model="file" plain></b-form-file>
+        <b-form-file
+          @change="fileChange"
+          class="input mt-3"
+          v-model="file"
+          plain
+        ></b-form-file>
         <b-button class="button" @click="goBack">Back</b-button>
         <b-button class="button submit" type="submit">Add Recipe</b-button>
       </b-jumbotron>
@@ -42,7 +48,7 @@ export default {
         id: null,
         title: "",
         time: "",
-        image: null,
+        image: require("@/assets/images/noImage.png"),
         description: "",
       },
     };
@@ -52,20 +58,36 @@ export default {
     ...mapActions(["addRecipe", "increaseRecipeNum"]),
     onSubmit(event) {
       event.preventDefault();
-      this.increaseRecipeNum();
-      this.newRecipe.id = this.getRecipeNum;
-      this.imageToBase64(this.file); //converts image to base64 and writes it in newRecipe.image
-      this.addRecipe(this.newRecipe);
-      alert("New Recipe Added");
+      if (
+        this.newRecipe.title !== "" &&
+        this.newRecipe.description !== "" &&
+        this.newRecipe.time !== ""
+      ) {
+        this.increaseRecipeNum();
+        this.newRecipe.id = this.getRecipeNum;
+        this.addRecipe(this.newRecipe);
+        alert("New Recipe Added");
+        this.goBack();
+      } else alert("Please fill title, time and description fields");
+    },
+    clearInputs() {
+      this.file = null;
+      this.newRecipe.id = null;
+      this.newRecipe.title = "";
+      this.newRecipe.time = "";
+      this.newRecipe.image = null;
+      this.newRecipe.description = "";
     },
     goBack() {
       this.$router.go(-1);
+    },
+    fileChange() {
+      this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
     },
     imageToBase64(file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        console.log("file to base64 result:" + reader.result);
         this.newRecipe.image = reader.result;
       };
       reader.onerror = function (error) {
@@ -82,7 +104,10 @@ export default {
   margin-top: 30px;
   background-color: #333;
 }
-
+.displayed-image {
+  width: 300px;
+  text-align: left;
+}
 .input {
   margin: 15px;
 }

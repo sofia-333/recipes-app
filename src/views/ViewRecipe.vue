@@ -40,12 +40,10 @@ export default {
   methods: {
     ...mapActions(["deleteRecipe"]),
     goBack() {
-      // this.$router.replace("/recipes");
       this.$router.go(-1);
     },
     editRecipe() {
       this.$router.push({ path: `${this.$route.params.id}/update` });
-      // this.$router.replace(`${this.$route.params.id}/update`);
     },
     getCurrentRecipe() {
       return this.allRecipes.find(
