@@ -1,6 +1,7 @@
 import Vue from 'vue'
 const state = {
   recipeNum: 4,
+  currentRecipe: null,
   recipes: [
     {
       id: 0,
@@ -86,6 +87,7 @@ const state = {
 const getters = {
   getRecipeNum: state => state.recipeNum,
   allRecipes: state => state.recipes,
+  getCurrent: state => state.currentRecipe,
 };
 
 const actions = {
@@ -100,6 +102,9 @@ const actions = {
   },
   updateRecipe({ commit }, updatedRecipe) {
     commit('update', updatedRecipe)
+  },
+  setCurrentRecipe({ commit }, currentId) {
+    commit('set', currentId)
   }
 };
 
@@ -117,6 +122,9 @@ const mutations = {
     const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
     Vue.set(state.recipes, index, updatedRecipe);
   },
+  set: (state, currentId) => {
+    state.currentRecipe = state.recipes.find((recipe) => recipe.id === currentId);
+  }
 };
 
 

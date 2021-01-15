@@ -1,18 +1,18 @@
 <template>
   <div class="container">
-    <h1>{{ getCurrentRecipe().title }}</h1>
-    <img class="image" :src="getCurrentRecipe().image" />
+    <h1>{{ getCurrent.title }}</h1>
+    <img class="image" :src="getCurrent.image" />
     <b-list-group>
       <b-list-group-item
-        ><b>Name:</b> {{ getCurrentRecipe().title }}</b-list-group-item
+        ><b>Name:</b> {{ getCurrent.title }}</b-list-group-item
       >
       <b-list-group-item
         ><b>Time to prepare:</b>
-        {{ getCurrentRecipe().time }}</b-list-group-item
+        {{ getCurrent.time }}</b-list-group-item
       >
       <b-list-group-item
         ><b>Description:</b><br />
-        {{ getCurrentRecipe().description }}</b-list-group-item
+        {{ getCurrent.description }}</b-list-group-item
       >
     </b-list-group>
     <div class="btn-container">
@@ -36,23 +36,24 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "ViewRecipe",
-  computed: mapGetters(["allRecipes"]),
+  computed: {
+    ...mapGetters(["allRecipes", "getCurrent"]),
+  },
   methods: {
-    ...mapActions(["deleteRecipe"]),
+    ...mapActions(["deleteRecipe", "setCurrentRecipe"]),
     goBack() {
       this.$router.go(-1);
     },
     editRecipe() {
       this.$router.push({ path: `${this.$route.params.id}/update` });
     },
-    getCurrentRecipe() {
-      return this.allRecipes.find(
-        (recipe) => recipe.id === parseInt(this.$route.params.id)
-      );
-    },
     deleteCurrentRecipe() {
-      this.deleteRecipe(this.getCurrentRecipe()).then(this.goBack());
+      console.log(this.getCurrent);
+      this.deleteRecipe(this.getCurrent).then(this.goBack());
     },
+  },
+  beforeMount() {
+    this.setCurrentRecipe(parseInt(this.$route.params.id));
   },
 };
 </script>
