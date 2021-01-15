@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       file: null,
+      fileChanged: false,
       updatedRecipe: {
         id: null,
         title: "",
@@ -67,14 +68,18 @@ export default {
     ...mapActions(["updateRecipe"]),
     onUpdate() {
       event.preventDefault();
+      if (this.fileChanged) {
+        this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
+      }
       this.updateRecipe(this.updatedRecipe);
       alert("Recipe Updated");
+      this.goBack();
     },
     goBack() {
       this.$router.go(-1);
     },
     fileChange() {
-      this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
+      this.fileChanged = true;
     },
     imageToBase64(file) {
       const reader = new FileReader();

@@ -68,7 +68,7 @@ export default {
         this.newRecipe.id = this.getRecipeNum;
         this.addRecipe(this.newRecipe);
         if (this.fileIsChanged) {
-          this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
+          this.imageToBase64(this.file); //converts image to base64 and writes it in newRecipe.image
         } //else the default image will be uploaded
         alert("New Recipe Added");
         this.goBack();
