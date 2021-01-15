@@ -2,7 +2,7 @@
   <div class="container">
     <b-form @submit="onSubmit">
       <b-jumbotron class="blue" header="Create New Recipe">
-        <img :src="newRecipe.image" class="displayed-image" alt="Image" />
+        <!-- <img :src="newRecipe.image" class="displayed-image" alt="Image" /> -->
         <b-form-input
           class="input"
           v-model="newRecipe.title"
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       file: null,
+      fileIsChanged: false,
       newRecipe: {
         id: null,
         title: "",
@@ -66,23 +67,18 @@ export default {
         this.increaseRecipeNum();
         this.newRecipe.id = this.getRecipeNum;
         this.addRecipe(this.newRecipe);
+        if (this.fileIsChanged) {
+          this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
+        } //else the default image will be uploaded
         alert("New Recipe Added");
         this.goBack();
       } else alert("Please fill title, time and description fields");
-    },
-    clearInputs() {
-      this.file = null;
-      this.newRecipe.id = null;
-      this.newRecipe.title = "";
-      this.newRecipe.time = "";
-      this.newRecipe.image = null;
-      this.newRecipe.description = "";
     },
     goBack() {
       this.$router.go(-1);
     },
     fileChange() {
-      this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
+      this.fileIsChanged = true;
     },
     imageToBase64(file) {
       const reader = new FileReader();
