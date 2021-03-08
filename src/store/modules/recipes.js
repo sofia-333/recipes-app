@@ -160,9 +160,7 @@ const actions = {
     commit('update', updatedRecipe)
   },
   setCurrentRecipe({commit}, currentId) {
-    console.log(state.recipes, 'action recipes')
     let current = state.recipes.find((recipe) => recipe.id === currentId);
-    console.log(current, 'action')
     commit('setCurrent', current)
   }
 };
@@ -185,9 +183,7 @@ const mutations = {
     Vue.set(state.recipes, index, updatedRecipe);
   },
   setCurrent: (state, current) => {
-    // state.currentRecipe = state.recipes.find((recipe) => recipe.id === currentId);
     state.currentRecipe = current;
-    console.log(current, 'state')
   }
 };
 

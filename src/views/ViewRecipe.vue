@@ -41,6 +41,11 @@ export default {
       current: state => state.recipes.currentRecipe
     })
   },
+  watch: {
+    '$route.params.id'(){
+      this.setCurrentRecipe(parseInt(this.$route.params.id));
+    }
+  },
   methods: {
     ...mapActions(["deleteRecipe", "setCurrentRecipe", "getRecipes"]),
     goBack() {
