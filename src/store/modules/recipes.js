@@ -107,7 +107,7 @@ const getters = {
   //       console.log(err)
   //     })
   // },
-  getCurrent: state => state.currentRecipe,
+  // getCurrent: state => state.currentRecipe,
 };
 
 const actions = {
@@ -133,8 +133,25 @@ const actions = {
   addRecipe({commit}, newRecipe) {
     commit('add', newRecipe)
   },
-  deleteRecipe({ commit }, recipeToDelete) {
-    commit('delete', recipeToDelete)
+  deleteRecipe({commit}, pk) {
+    let newRecipesList = state => state.allRecipes;
+    const deleteMethod = {
+      method: 'DELETE', // Method itself
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }
+    fetch(`http://localhost:8000/api/recipes/` + pk, deleteMethod)
+      .then(data => {
+        return data.json()
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    commit('delete', newRecipesList)
   },
   increaseRecipeNum({commit}) {
     commit('increase')
@@ -142,9 +159,11 @@ const actions = {
   updateRecipe({commit}, updatedRecipe) {
     commit('update', updatedRecipe)
   },
-  setCurrentRecipe({commit, getters}, currentId) {
-    const current = getters.allRecipes.find((recipe) => recipe.id === currentId);
-    commit('set', current)
+  setCurrentRecipe({commit}, currentId) {
+    console.log(state.recipes, 'action recipes')
+    let current = state.recipes.find((recipe) => recipe.id === currentId);
+    console.log(current, 'action')
+    commit('setCurrent', current)
   }
 };
 
@@ -165,9 +184,10 @@ const mutations = {
     const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
     Vue.set(state.recipes, index, updatedRecipe);
   },
-  set: (state, current) => {
+  setCurrent: (state, current) => {
     // state.currentRecipe = state.recipes.find((recipe) => recipe.id === currentId);
     state.currentRecipe = current;
+    console.log(current, 'state')
   }
 };
 
