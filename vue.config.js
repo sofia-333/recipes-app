@@ -9,5 +9,8 @@ module.exports = {
       // Or if using full build of Vue (runtime + compiler)
       // path.resolve(__dirname, 'node_modules/vue/dist/vue.esm.js')
     )
+  },
+  devServer: {
+    proxy: 'http://localhost:8000',
   }
 }

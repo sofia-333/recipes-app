@@ -12,7 +12,7 @@
     </div>
     <h1>Your Recipes</h1>
     <div class="grid-list">
-      <div :key="recipe.id" v-for="recipe in displayedRecipes()">
+      <div v-for="recipe in displayedRecipes()" :key="recipe.id">
         <b-card
           :title="recipe.title"
           :img-src="recipe.image"
@@ -38,7 +38,7 @@
 
 <script>
 import Header from "../components/Header.vue";
-import { mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "RecipesList",
@@ -50,46 +50,44 @@ export default {
       searched: "",
     };
   },
+  computed: {
+    ...mapState({
+      allRecipes: state => state.recipes.recipes //state.recipes is a js file and state.recipes.recipes is an array itself
+    }),
+  },
   methods: {
-    // ...mapActions(['searchRecipe']),
+    ...mapActions(['getRecipes']),
     addRecipe() {
-      this.$router.push({ path: `recipes/create` });
+      this.$router.push({path: `recipes/create`});
     },
     viewRecipe(recipe) {
-      this.$router.push({ path: `recipes/${recipe.id}` });
+      this.$router.push({path: `recipes/${recipe.id}`});
     },
     editRecipe(recipe) {
-      this.$router.push({ path: `recipes/${recipe.id}/update` });
+      this.$router.push({path: `recipes/${recipe.id}/update`});
     },
     searchRecipe() {
-      const matched = this.allRecipes.filter(
+      return this.allRecipes.filter(
         (recipe) =>
           recipe.title.toLowerCase().indexOf(this.searched.toLowerCase()) !== -1
       );
-      return matched;
     },
     displayedRecipes() {
-      if (this.searched === "") return this.allRecipes;
-      else return this.searchRecipe();
+      if (this.searched === "") {
+        return this.allRecipes;
+      } else return this.searchRecipe();
     },
   },
-  computed: mapGetters(["allRecipes"]),
-};
+  async beforeMount() {
+    await this.getRecipes();
+  }
+}
 </script>
 
 <style scoped>
 .search {
   width: 60%;
   margin: 14px 19%;
-}
-.my-sm-0 {
-  margin-left: 1%;
-}
-
-.card-img {
-  width: 100%;
-  height: 10vw;
-  object-fit: cover;
 }
 
 #addIcon {
