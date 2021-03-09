@@ -160,8 +160,10 @@ const actions = {
     commit('update', updatedRecipe)
   },
   setCurrentRecipe({commit}, currentId) {
-    let current = state.recipes.find((recipe) => recipe.id === currentId);
-    commit('setCurrent', current)
+    let current = null;
+    current = state.recipes.find((recipe) => recipe.id === currentId);
+    if (current == null) alert('Recipe Not Found')
+    else commit('setCurrent', current)
   }
 };
 
