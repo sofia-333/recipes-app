@@ -9,8 +9,9 @@
           placeholder="Title"
         ></b-form-input>
         <b-form-input
+          type="number"
           class="input"
-          v-model="updatedRecipe.time"
+          v-model="updatedRecipe.time_to_prepare"
           placeholder="Time to prepare"
         ></b-form-input>
 
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "UpdateRecipe",
@@ -49,7 +50,7 @@ export default {
       updatedRecipe: {
         id: null,
         title: "",
-        time: "",
+        time_to_prepare: "",
         description: "",
         image: null,
       },
@@ -59,20 +60,42 @@ export default {
     const current = this.getCurrentRecipe();
     this.updatedRecipe.id = current.id;
     this.updatedRecipe.title = current.title;
-    this.updatedRecipe.time = current.time;
+    this.updatedRecipe.time_to_prepare = current.time_to_prepare;
     this.updatedRecipe.description = current.description;
-    this.updatedRecipe.image = current.image;
+    // this.updatedRecipe.image = current.image;
   },
-  computed: mapGetters(["allRecipes"]),
+  computed: {
+    ...mapState({
+      allRecipes: state => state.recipes.recipes //state.recipes is a js file and state.recipes.recipes is an array itself
+    })
+  },
   methods: {
-    ...mapActions(["updateRecipe"]),
-    onUpdate() {
+    ...mapActions(["getRecipes"]),
+    async onUpdate(event) {
+      await this.getRecipes();
       event.preventDefault();
       if (this.fileChanged) {
         this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
       }
-      this.updateRecipe(this.updatedRecipe);
-      alert("Recipe Updated");
+      const putMethod = {
+        method: 'PUT', // Method itself
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(this.updatedRecipe)
+      }
+      fetch(`http://localhost:8000/api/recipes/${this.updatedRecipe.id}/`, putMethod)
+        .then(data => {
+          return data.json()
+        })
+        .then(res => {
+          alert("Recipe Updated");
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      await this.getRecipes();
       this.goBack();
     },
     goBack() {

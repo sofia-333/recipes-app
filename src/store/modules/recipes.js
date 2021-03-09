@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 
 const state = {
   recipeNum: 4,
@@ -125,9 +125,9 @@ const actions = {
       })
     commit('add', newRecipe)
   },
-  updateRecipe({commit}, updatedRecipe) {
-    commit('update', updatedRecipe)
-  },
+  // updateRecipe({commit}, updatedRecipe) {
+  //   commit('update', updatedRecipe)
+  // },
   setCurrentRecipe({commit}, currentId) {
     let current = null;
     current = state.recipes.find((recipe) => recipe.id === currentId);
@@ -149,10 +149,10 @@ const mutations = {
   increase: (state) => {
     state.recipeNum++;
   },
-  update: (state, updatedRecipe) => {
-    const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
-    Vue.set(state.recipes, index, updatedRecipe);
-  },
+  // update: (state, updatedRecipe) => {
+  //   const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
+  //   Vue.set(state.recipes, index, updatedRecipe);
+  // },
   setCurrent: (state, current) => {
     state.currentRecipe = current;
   }
