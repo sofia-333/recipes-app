@@ -9,8 +9,9 @@
           placeholder="Title"
         ></b-form-input>
         <b-form-input
+          type="number"
           class="input"
-          v-model="newRecipe.time"
+          v-model="newRecipe.time_to_prepare"
           placeholder="Time to prepare"
         ></b-form-input>
 
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "CreateRecipe",
@@ -46,26 +47,21 @@ export default {
       file: null,
       fileIsChanged: false,
       newRecipe: {
-        id: null,
         title: "",
-        time: "",
-        image: require("@/assets/images/noImage.png"),
         description: "",
-      },
+        time_to_prepare: null,
+      }
     };
   },
-  computed: mapGetters(["getRecipeNum"]),
   methods: {
-    ...mapActions(["addRecipe", "increaseRecipeNum"]),
+    ...mapActions(["addRecipe"]),
     onSubmit(event) {
       event.preventDefault();
       if (
         this.newRecipe.title !== "" &&
         this.newRecipe.description !== "" &&
-        this.newRecipe.time !== ""
+        this.newRecipe.time_to_prepare !== null
       ) {
-        this.increaseRecipeNum();
-        this.newRecipe.id = this.getRecipeNum;
         this.addRecipe(this.newRecipe);
         if (this.fileIsChanged) {
           this.imageToBase64(this.file); //converts image to base64 and writes it in newRecipe.image

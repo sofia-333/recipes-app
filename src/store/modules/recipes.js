@@ -131,6 +131,23 @@ const actions = {
   },
 
   addRecipe({commit}, newRecipe) {
+    const postMethod = {
+      method: 'POST', // Method itself
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(newRecipe)
+    }
+    fetch(`http://localhost:8000/api/recipes/`, postMethod)
+      .then(data => {
+        return data.json()
+      })
+      .then(res => {
+        commit('add', res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     commit('add', newRecipe)
   },
   deleteRecipe({commit}, pk) {
