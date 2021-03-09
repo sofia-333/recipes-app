@@ -8,7 +8,7 @@
       >
       <b-list-group-item
         ><b>Time to prepare:</b>
-        {{ current.time }}</b-list-group-item
+        {{ current.time_to_prepare }}</b-list-group-item
       >
       <b-list-group-item
         ><b>Description:</b><br />
@@ -62,7 +62,7 @@ export default {
         },
         body: JSON.stringify(this.current)
       }
-      fetch(`http://localhost:8000/api/recipes/` + this.current.id, deleteMethod)
+      fetch(`http://localhost:8000/api/recipes/${this.current.id}/`, deleteMethod)
       .then(res=>res.json())
       .then(res => {
         console.log(res, "deleted")
