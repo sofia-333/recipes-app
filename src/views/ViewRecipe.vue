@@ -47,16 +47,31 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["deleteRecipe", "setCurrentRecipe", "getRecipes"]),
+    ...mapActions(["setCurrentRecipe", "getRecipes"]),
     goBack() {
       this.$router.go(-1);
     },
     editRecipe() {
       this.$router.push({ path: `${this.$route.params.id}/update` });
     },
-    deleteCurrentRecipe() {
-      console.log(this.current);
-      // this.deleteRecipe(this.current.id).then(this.goBack());
+    async deleteCurrentRecipe() {
+      const deleteMethod = {
+        method: 'DELETE', // Method itself
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(this.current)
+      }
+      fetch(`http://localhost:8000/api/recipes/` + this.current.id, deleteMethod)
+      .then(res=>res.json())
+      .then(res => {
+        console.log(res, "deleted")
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      await this.getRecipes();
+      this.goBack();
     },
   },
   beforeMount() {

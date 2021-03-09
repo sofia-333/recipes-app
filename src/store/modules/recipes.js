@@ -85,31 +85,6 @@ const state = {
   ]
 };
 
-const getters = {
-  getRecipeNum: state => state.recipeNum,
-  // allRecipes: state => state.recipes,
-  // allRecipes: () => {
-  //   const getMethod = {
-  //     headers: {
-  //       'Content-type': 'application/json; charset=UTF-8',
-  //     },
-  //     method: 'GET',
-  //   }
-  //   fetch(`http://localhost:8000/api/recipes/`, getMethod)
-  //     .then(data => {
-  //       return data.json()
-  //     })
-  //     .then(res => {
-  //       console.log(res)
-  //       return res
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // },
-  // getCurrent: state => state.currentRecipe,
-};
-
 const actions = {
   getRecipes({commit}) {
     const getMethod = {
@@ -123,7 +98,7 @@ const actions = {
         return data.json()
       })
       .then(res => {
-        commit('setRecipes',res)
+        commit('setRecipes', res)
       })
       .catch(err => {
         console.log(err)
@@ -149,29 +124,6 @@ const actions = {
         console.log(err)
       })
     commit('add', newRecipe)
-  },
-  deleteRecipe({commit}, pk) {
-    let newRecipesList = state => state.allRecipes;
-    const deleteMethod = {
-      method: 'DELETE', // Method itself
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }
-    fetch(`http://localhost:8000/api/recipes/` + pk, deleteMethod)
-      .then(data => {
-        return data.json()
-      })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    commit('delete', newRecipesList)
-  },
-  increaseRecipeNum({commit}) {
-    commit('increase')
   },
   updateRecipe({commit}, updatedRecipe) {
     commit('update', updatedRecipe)
@@ -209,7 +161,6 @@ const mutations = {
 
 export default {
   state,
-  getters,
   actions,
   mutations
 }
