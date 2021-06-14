@@ -1,38 +1,38 @@
 <template>
   <div class="container">
     <h1>{{ current.title }}</h1>
-<!--    <img class="image" :src="current.image" />-->
+    <!--    <img class="image" :src="current.image" />-->
     <b-list-group>
-      <b-list-group-item
-        ><b>Name:</b> {{ current.title }}</b-list-group-item
-      >
-      <b-list-group-item
-        ><b>Time to prepare:</b>
-        {{ current.time_to_prepare }}</b-list-group-item
-      >
-      <b-list-group-item
-        ><b>Description:</b><br />
-        {{ current.description }}</b-list-group-item
-      >
+      <b-list-group-item>
+        <b>Name:</b> {{ current.title }}
+      </b-list-group-item>
+      <b-list-group-item>
+        <b>Time to prepare:</b>
+        {{ current.time_to_prepare }}
+      </b-list-group-item>
+      <b-list-group-item>
+        <b>Description:</b><br/>
+        {{ current.description }}
+      </b-list-group-item>
     </b-list-group>
     <div class="btn-container">
       <b-icon
-        class="icon-trash"
-        icon="pencil-fill"
-        @click="editRecipe"
-      ></b-icon>
+          class="icon-trash"
+          icon="pencil-fill"
+          @click="editRecipe">
+      </b-icon>
       <b-icon
-        class="icon-edit"
-        icon="trash-fill"
-        @click="deleteCurrentRecipe"
-      ></b-icon>
+          class="icon-edit"
+          icon="trash-fill"
+          @click="deleteCurrentRecipe">
+      </b-icon>
       <b-button class="button" @click="goBack">Back</b-button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "ViewRecipe",
@@ -42,7 +42,7 @@ export default {
     })
   },
   watch: {
-    '$route.params.id'(){
+    '$route.params.id'() {
       this.setCurrentRecipe(parseInt(this.$route.params.id));
     }
   },
@@ -52,7 +52,7 @@ export default {
       this.$router.go(-1);
     },
     editRecipe() {
-      this.$router.push({ path: `${this.$route.params.id}/update` });
+      this.$router.push({path: `${this.$route.params.id}/update`});
     },
     async deleteCurrentRecipe() {
       const deleteMethod = {
@@ -63,13 +63,13 @@ export default {
         body: JSON.stringify(this.current)
       }
       fetch(`http://localhost:8000/api/recipes/${this.current.id}/`, deleteMethod)
-      .then(res=>res.json())
-      .then(res => {
-        console.log(res, "deleted")
-      })
-      .catch(err => {
-        console.log(err)
-      })
+          .then(res => res.json())
+          .then(res => {
+            console.log(res, "deleted")
+          })
+          .catch(err => {
+            console.log(err)
+          })
       await this.getRecipes();
       this.goBack();
     },
@@ -85,11 +85,6 @@ export default {
 .container {
   padding: 20px;
 }
-.image {
-  width: 500px;
-  margin: 5px;
-  border-radius: 20px;
-}
 .icon-edit,
 .icon-trash {
   font-size: 35px;
@@ -99,14 +94,17 @@ export default {
   cursor: pointer;
   margin: 5px;
 }
+
 .icon-edit :hover,
 .icon-trash :hover {
   color: grey;
   border-color: grey;
 }
+
 .button {
   margin: 5px;
 }
+
 .btn-container {
   display: flex;
   justify-content: center;
