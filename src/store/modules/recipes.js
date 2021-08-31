@@ -86,14 +86,19 @@ const state = {
 };
 
 const actions = {
-  getRecipes({commit}) {
+  getRecipes({commit}, search) {
     const getMethod = {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
       method: 'GET',
     }
-    fetch(`http://localhost:8000/api/recipes/`, getMethod)
+    let url = `http://localhost:8000/api/recipes/`
+    if(search) {
+      console.log(6661)
+      url = `http://localhost:8000/api/recipes/?title=${search}`
+    }
+    fetch(url, getMethod)
       .then(data => {
         return data.json()
       })
