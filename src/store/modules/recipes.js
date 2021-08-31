@@ -95,7 +95,6 @@ const actions = {
     }
     let url = `http://localhost:8000/api/recipes/`
     if(search) {
-      console.log(6661)
       url = `http://localhost:8000/api/recipes/?title=${search}`
     }
     fetch(url, getMethod)
