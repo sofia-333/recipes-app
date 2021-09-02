@@ -3,6 +3,7 @@
 const state = {
   recipeNum: 4,
   currentRecipe: null,
+  timeSum: null,
   recipes: [
     // {
     //   id: 0,
@@ -111,7 +112,7 @@ const actions = {
 
   addRecipe({commit}, newRecipe) {
     const postMethod = {
-      method: 'POST', // Method itself
+      method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
@@ -137,6 +138,26 @@ const actions = {
     current = state.recipes.find((recipe) => recipe.id === currentId);
     if (current == null) alert('Recipe Not Found')
     else commit('setCurrent', current)
+  },
+  calculate({commit}, ids) {
+    const postMethod = {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(ids)
+    }
+    fetch(`http://localhost:8000/api/recipes/calculate/`, postMethod)
+      .then(data => {
+        return data.json()
+      })
+      .then(res => {
+        commit('setTime', res)
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 };
 
@@ -159,6 +180,9 @@ const mutations = {
   // },
   setCurrent: (state, current) => {
     state.currentRecipe = current;
+  },
+  setTime: (state, timeSum) => {
+    state.timeSum = timeSum
   }
 };
 
