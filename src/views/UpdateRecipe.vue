@@ -88,10 +88,8 @@
         //   this.imageToBase64(this.file); //converts image to base64 and writes it in updatedRecipe.image
         // }
         await this.getRecipes();
-        console.log(this.updatedRecipe);
         await this.updateRecipe(this.updatedRecipe)
         await this.getRecipes();
-        console.log(this.updatedRecipe);
         this.goBack();
       },
       goBack() {
