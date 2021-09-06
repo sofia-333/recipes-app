@@ -1,13 +1,13 @@
 <template>
   <div class="recipes">
     <Header/>
-    <b-form-input
-      debounce="500"
-      class="search"
-      v-model="searched"
-      placeholder="Type dish name..."
-      @change="searchRecipe"
-    ></b-form-input>
+    <div class="d-flex justify-content-center flex-col m-3">
+      <b-form-input debounce="500" class="search w-25" v-model="searchTitle" placeholder="Type dish name..."></b-form-input>
+      <div>
+        <b-form-select v-model="searchTime" :options="timeOptions" class="ml-1"></b-form-select>
+      </div>
+      <b-button @click="searchRecipe" variant="primary" class="b-form-button ml-1">Search</b-button>
+    </div>
     <div class="d-flex justify-content-between flex-col m-3 mt-5">
       <span @click="addRecipe" class="add">
         <b-icon id="addIcon" icon="plus-circle-fill"></b-icon>
@@ -51,8 +51,16 @@
     },
     data() {
       return {
-        searched: null,
-        selectedRecipes: new Set()
+        searchTitle: null,
+        searchTime: null,
+        selectedRecipes: new Set(),
+        timeOptions: [
+          {value: null, text: 'No max time'},
+          {value: 30, text: '30m'},
+          {value: 60, text: '1h'},
+          {value: 120, text: '2h'},
+          {value: 180, text: '3h'}
+        ]
       };
     },
     computed: {
@@ -73,7 +81,7 @@
         this.$router.push({path: `recipes/${recipe.id}/update`});
       },
       searchRecipe() {
-        this.getRecipes(this.searched);
+        this.getRecipes({searchTime: this.searchTime, searchTitle: this.searchTitle});
         this.selectedRecipes = new Set()
       },
       onSelect(checked, item) {
@@ -100,10 +108,14 @@
 </script>
 
 <style scoped>
-  .search {
-    width: 60%;
-    margin: 14px 19%;
-  }
+  /*.search {*/
+  /*  width: 60%;*/
+  /*  margin-right: 10px;*/
+  /*}*/
+
+  /*.filters {*/
+  /*  */
+  /*}*/
 
   #addIcon, #calculateIcon {
     font-size: 2rem;

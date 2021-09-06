@@ -9,10 +9,17 @@ const state = {
 };
 
 const actions = {
-  async getRecipes({commit}, search) {
+  async getRecipes({commit}, params=null) {
     let url = `http://localhost:8000/api/recipes/`
-    if (search) {
-      url = `http://localhost:8000/api/recipes/?title=${search}`
+    if (params) {
+      let {searchTitle, searchTime} = params
+      if (searchTitle && searchTime) {
+        url = url.concat(`?title=${searchTitle}&time_to_prepare=${searchTime}`);
+      } else if (searchTitle) {
+        url = url.concat(`?title=${searchTitle}`);
+      } else if (searchTime) {
+        url = url.concat(`?time_to_prepare=${searchTime}`)
+      }
     }
     await axios.get(url)
       .then(response => commit('setRecipes', response.data))
@@ -65,7 +72,6 @@ const mutations = {
   },
   setTime: (state, timeSum) => {
     state.timeSum = timeSum
-    console.log('set');
   }
 };
 
