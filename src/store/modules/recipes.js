@@ -1,5 +1,4 @@
-// import Vue from 'vue'
-
+import Vue from 'vue'
 import axios from "axios";
 
 const state = {
@@ -25,9 +24,11 @@ const actions = {
       .then(res => commit('add', res.data))
       .catch(err => console.log(err))
   },
-  // updateRecipe({commit}, updatedRecipe) {
-  //   commit('update', updatedRecipe)
-  // },
+  async updateRecipe({commit}, updatedRecipe) {
+    await axios.put(`http://localhost:8000/api/recipes/${updatedRecipe.id}/`, updatedRecipe)
+      .then(res => commit('update', res.data))
+      .catch(err => console.log(err))
+  },
   setCurrentRecipe({commit}, currentId) {
     let current = null;
     current = state.recipes.find((recipe) => recipe.id === currentId);
@@ -55,10 +56,10 @@ const mutations = {
   increase: (state) => {
     state.recipeNum++;
   },
-  // update: (state, updatedRecipe) => {
-  //   const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
-  //   Vue.set(state.recipes, index, updatedRecipe);
-  // },
+  update: (state, updatedRecipe) => {
+    const index = state.recipes.findIndex(recipe => recipe.id === updatedRecipe.id);
+    Vue.set(state.recipes, index, updatedRecipe);
+  },
   setCurrent: (state, current) => {
     state.currentRecipe = current;
   },
